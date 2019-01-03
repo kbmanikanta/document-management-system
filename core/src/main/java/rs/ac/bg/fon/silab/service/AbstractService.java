@@ -2,16 +2,16 @@ package rs.ac.bg.fon.silab.service;
 
 import java.util.List;
 
-public interface AbstractService<SaveDTO, GetDTO> {
+public interface AbstractService<SaveDto, GetDto, DetailsDto> {
 
-    void insert(SaveDTO saveDTO);
+    void insert(SaveDto saveDto);
 
-    void update(SaveDTO saveDTO, Integer id);
+    void update(SaveDto saveDto, Integer id);
 
     void delete(Integer id);
 
-    GetDTO getById(Integer id);
+    DetailsDto getById(Integer id);
 
-    List<GetDTO> getAll();
+    List<GetDto> getAll();
 
 }

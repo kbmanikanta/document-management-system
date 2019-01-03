@@ -5,13 +5,13 @@ import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Component;
 import rs.ac.bg.fon.silab.dao.CompanyDao;
 import rs.ac.bg.fon.silab.entity.Company;
-import rs.ac.bg.fon.silab.dto.company.CompanySaveDTO;
+import rs.ac.bg.fon.silab.dto.company.CompanySaveDto;
 import rs.ac.bg.fon.silab.exception.ValidationException;
 
 import java.util.*;
 
 @Component
-public class CompanySaveDTOValidator extends DTOValidator<CompanySaveDTO> {
+public class CompanySaveDtoValidator extends DtoValidator<CompanySaveDto> {
 
     @Autowired
     private CompanyDao companyDao;
@@ -20,23 +20,23 @@ public class CompanySaveDTOValidator extends DTOValidator<CompanySaveDTO> {
     private MessageSource messageSource;
 
     @Override
-    void customValidation(CompanySaveDTO companySaveDTO) {
+    void customValidation(CompanySaveDto companySaveDTO) {
         if (companyDao.getByTaxIdNumber(companySaveDTO.getTaxIdNumber()) != null) {
-            throw new ValidationException(getErrors(companySaveDTO));
+            throw new ValidationException(getTaxIdNumberUniqueError(companySaveDTO));
         }
     }
 
     @Override
-    void customValidation(CompanySaveDTO companySaveDTO, Integer id) {
+    void customValidation(CompanySaveDto companySaveDTO, Integer id) {
         Company company = companyDao.getByTaxIdNumber(companySaveDTO.getTaxIdNumber());
 
         if (company != null && company.getTaxIdNumber().equals(companySaveDTO.getTaxIdNumber())
                 && !company.getId().equals(id)) {
-            throw new ValidationException(getErrors(companySaveDTO));
+            throw new ValidationException(getTaxIdNumberUniqueError(companySaveDTO));
         }
     }
 
-    private Map<String, List<String>> getErrors(CompanySaveDTO companySaveDTO) {
+    private Map<String, List<String>> getTaxIdNumberUniqueError(CompanySaveDto companySaveDTO) {
         String taxIdNumberErrorMessage = messageSource.getMessage("company.tax.id.number.unique",
                 new Object[] { companySaveDTO.getTaxIdNumber() }, Locale.getDefault());
 

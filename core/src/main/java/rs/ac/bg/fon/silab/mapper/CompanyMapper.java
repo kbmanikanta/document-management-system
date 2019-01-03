@@ -1,23 +1,24 @@
 package rs.ac.bg.fon.silab.mapper;
 
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.Mappings;
+import org.springframework.stereotype.Component;
 import rs.ac.bg.fon.silab.entity.Company;
-import rs.ac.bg.fon.silab.dto.company.CompanyGetDTO;
-import rs.ac.bg.fon.silab.dto.company.CompanySaveDTO;
+import rs.ac.bg.fon.silab.dto.company.CompanyGetDto;
+import rs.ac.bg.fon.silab.dto.company.CompanySaveDto;
 
-@Mapper(componentModel = "spring")
-public interface CompanyMapper {
+@Component
+public class CompanyMapper {
 
-    @Mappings({
-            @Mapping(target = "id", source = "id"),
-            @Mapping(target = "name", source = "name")
-    })
-    CompanyGetDTO companyToCompanyGetDTO(Company company);
+    public CompanyGetDto toCompanyGetDto(Company company) {
+        return new CompanyGetDto(
+                company.getId(),
+                company.getName(),
+                company.getTaxIdNumber());
+    }
 
-    @Mappings({
-            @Mapping(target = "name", source = "name")
-    })
-    Company companySaveDTOToCompany(CompanySaveDTO companySaveDTO);
+    public Company toCompany(CompanySaveDto companySaveDto) {
+        return new Company(
+                companySaveDto.getName(),
+                companySaveDto.getTaxIdNumber());
+    }
+
 }

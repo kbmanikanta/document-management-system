@@ -7,23 +7,23 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 import java.util.*;
 
-public abstract class DTOValidator<DTO> {
+public abstract class DtoValidator<Dto> {
 
     @Autowired
     private Validator validator;
 
-    public void validate(DTO dto) {
+    public void validate(Dto dto) {
         beanValidation(dto);
         customValidation(dto);
     }
 
-    public void validate(DTO dto, Integer id) {
+    public void validate(Dto dto, Integer id) {
         beanValidation(dto);
         customValidation(dto, id);
     }
 
-    private void beanValidation(DTO dto) {
-        Set<ConstraintViolation<DTO>> constraintViolations = validator.validate(dto);
+    private void beanValidation(Dto dto) {
+        Set<ConstraintViolation<Dto>> constraintViolations = validator.validate(dto);
 
         if (!constraintViolations.isEmpty()) {
             Map<String, List<String>> errors = constraintViolations.stream()
@@ -39,8 +39,8 @@ public abstract class DTOValidator<DTO> {
         }
     }
 
-    abstract void customValidation(DTO dto);
+    abstract void customValidation(Dto dto);
 
-    abstract void customValidation(DTO dto, Integer id);
+    abstract void customValidation(Dto dto, Integer id);
 
 }

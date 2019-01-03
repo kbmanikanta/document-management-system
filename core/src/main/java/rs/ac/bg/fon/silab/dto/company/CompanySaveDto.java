@@ -2,7 +2,7 @@ package rs.ac.bg.fon.silab.dto.company;
 
 import javax.validation.constraints.*;
 
-public class CompanySaveDTO {
+public class CompanySaveDto {
 
     @NotEmpty(message = "{company.name.not.empty}")
     @Size(max = 100, message = "{company.name.size}")
@@ -13,9 +13,9 @@ public class CompanySaveDTO {
     @Pattern(regexp = "^\\d+$", message = "{company.tax.id.number.pattern}")
     private String taxIdNumber;
 
-    public CompanySaveDTO() {}
+    public CompanySaveDto() {}
 
-    public CompanySaveDTO(String name, String taxIdNumber) {
+    public CompanySaveDto(String name, String taxIdNumber) {
         this.name = name;
         this.taxIdNumber = taxIdNumber;
     }

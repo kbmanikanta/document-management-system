@@ -4,12 +4,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import rs.ac.bg.fon.silab.entity.Company;
 import rs.ac.bg.fon.silab.dao.CompanyDao;
-import rs.ac.bg.fon.silab.dto.company.CompanyGetDTO;
-import rs.ac.bg.fon.silab.dto.company.CompanySaveDTO;
+import rs.ac.bg.fon.silab.dto.company.CompanyGetDto;
+import rs.ac.bg.fon.silab.dto.company.CompanySaveDto;
 import rs.ac.bg.fon.silab.exception.EntityNotFoundException;
 import rs.ac.bg.fon.silab.mapper.CompanyMapper;
 import rs.ac.bg.fon.silab.service.CompanyService;
-import rs.ac.bg.fon.silab.validator.DTOValidator;
+import rs.ac.bg.fon.silab.validator.DtoValidator;
 
 import javax.transaction.Transactional;
 import java.util.List;
@@ -25,32 +25,32 @@ public class CompanyServiceImpl implements CompanyService {
     private CompanyMapper companyMapper;
 
     @Autowired
-    private DTOValidator<CompanySaveDTO> dtoValidator;
+    private DtoValidator<CompanySaveDto> dtoValidator;
 
-    @Override
     @Transactional
-    public void insert(CompanySaveDTO companySaveDTO) {
-        dtoValidator.validate(companySaveDTO);
-        companyDao.insert(companyMapper.companySaveDTOToCompany(companySaveDTO));
+    @Override
+    public void insert(CompanySaveDto companySaveDto) {
+        dtoValidator.validate(companySaveDto);
+        companyDao.insert(companyMapper.toCompany(companySaveDto));
     }
 
-    @Override
     @Transactional
-    public void update(CompanySaveDTO companySaveDTO, Integer id) {
+    @Override
+    public void update(CompanySaveDto companySaveDto, Integer id) {
         Company company = companyDao.getById(id);
 
         if (company != null) {
-            dtoValidator.validate(companySaveDTO, id);
+            dtoValidator.validate(companySaveDto, id);
 
-            company.setName(companySaveDTO.getName());
-            company.setTaxIdNumber(companySaveDTO.getTaxIdNumber());
+            company.setName(companySaveDto.getName());
+            company.setTaxIdNumber(companySaveDto.getTaxIdNumber());
         } else {
             throw new EntityNotFoundException("company.not.found");
         }
     }
 
-    @Override
     @Transactional
+    @Override
     public void delete(Integer id) {
         Company company = companyDao.getById(id);
 
@@ -61,23 +61,23 @@ public class CompanyServiceImpl implements CompanyService {
         }
     }
 
-    @Override
     @Transactional
-    public CompanyGetDTO getById(Integer id) {
+    @Override
+    public CompanyGetDto getById(Integer id) {
         Company company = companyDao.getById(id);
 
         if (company != null) {
-            return companyMapper.companyToCompanyGetDTO(company);
+            return companyMapper.toCompanyGetDto(company);
         }
 
         throw new EntityNotFoundException("company.not.found");
     }
 
-    @Override
     @Transactional
-    public List<CompanyGetDTO> getAll() {
+    @Override
+    public List<CompanyGetDto> getAll() {
         return companyDao.getAll().stream()
-                .map(company -> companyMapper.companyToCompanyGetDTO(company))
+                .map(company -> companyMapper.toCompanyGetDto(company))
                 .collect(Collectors.toList());
     }
 

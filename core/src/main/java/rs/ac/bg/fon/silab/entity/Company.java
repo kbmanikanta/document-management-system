@@ -1,6 +1,7 @@
 package rs.ac.bg.fon.silab.entity;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "company")
@@ -16,6 +17,9 @@ public class Company {
 
     @Column(name = "tax_id_number")
     private String taxIdNumber;
+
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "company")
+    private List<Template> templates;
 
     public Company() {}
 
@@ -46,6 +50,14 @@ public class Company {
 
     public void setTaxIdNumber(String taxIdNumber) {
         this.taxIdNumber = taxIdNumber;
+    }
+
+    public List<Template> getTemplates() {
+        return templates;
+    }
+
+    public void setTemplates(List<Template> templates) {
+        this.templates = templates;
     }
 
 }

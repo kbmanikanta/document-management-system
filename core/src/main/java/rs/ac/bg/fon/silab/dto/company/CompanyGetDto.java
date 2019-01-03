@@ -1,12 +1,12 @@
 package rs.ac.bg.fon.silab.dto.company;
 
-public class CompanyGetDTO extends CompanySaveDTO {
+public class CompanyGetDto extends CompanySaveDto {
 
     private Integer id;
 
-    public CompanyGetDTO() {}
+    public CompanyGetDto() {}
 
-    public CompanyGetDTO(Integer id, String name, String taxIdNumber) {
+    public CompanyGetDto(Integer id, String name, String taxIdNumber) {
         super(name, taxIdNumber);
         this.id = id;
     }
