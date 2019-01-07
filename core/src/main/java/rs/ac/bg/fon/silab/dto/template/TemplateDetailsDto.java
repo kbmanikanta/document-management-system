@@ -11,8 +11,8 @@ public class TemplateDetailsDto extends TemplateGetDto {
 
     public TemplateDetailsDto() {}
 
-    public TemplateDetailsDto(String name, String description, Integer id, CompanyGetDto company, List<TemplateItemDto> templateItems) {
-        super(name, description, id, company);
+    public TemplateDetailsDto(String name, String description, Integer state, Integer id, CompanyGetDto company, List<TemplateItemDto> templateItems) {
+        super(name, description, state, id, company);
         this.templateItems = templateItems;
     }
 

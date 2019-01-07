@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import rs.ac.bg.fon.silab.dao.TemplateDao;
 import rs.ac.bg.fon.silab.entity.Template;
+import rs.ac.bg.fon.silab.entity.TemplateItem;
 
 import java.util.List;
 
@@ -37,5 +38,11 @@ public class TemplateDaoImpl implements TemplateDao {
         return sessionFactory.getCurrentSession()
                 .createQuery("from Template", Template.class)
                 .getResultList();
+    }
+
+    @Override
+    public TemplateItem getTemplateItemById(Integer id) {
+        return sessionFactory.getCurrentSession()
+                .get(TemplateItem.class, id);
     }
 }

@@ -10,6 +10,7 @@ import rs.ac.bg.fon.silab.dto.template.item.TemplateItemDto;
 import rs.ac.bg.fon.silab.entity.Template;
 import rs.ac.bg.fon.silab.entity.TemplateItem;
 import rs.ac.bg.fon.silab.entity.TemplateItemType;
+import rs.ac.bg.fon.silab.entity.TemplateState;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -27,6 +28,7 @@ public class TemplateMapper {
         return new TemplateGetDto(
                 template.getName(),
                 template.getDescription(),
+                template.getState().ordinal(),
                 template.getId(),
                 companyMapper.toCompanyGetDto(template.getCompany()));
     }
@@ -35,6 +37,7 @@ public class TemplateMapper {
         return new TemplateDetailsDto(
                 template.getName(),
                 template.getDescription(),
+                template.getState().ordinal(),
                 template.getId(),
                 companyMapper.toCompanyGetDto(template.getCompany()),
                 toTemplateItemDtos(template.getTemplateItems()));
@@ -44,28 +47,35 @@ public class TemplateMapper {
         return new Template(
                 templateSaveDto.getName(),
                 templateSaveDto.getDescription(),
+                TemplateState.values()[templateSaveDto.getState()],
                 companyDao.getById(templateSaveDto.getCompanyId()),
                 toTemplateItems(templateSaveDto.getTemplateItems()));
     }
 
     public List<TemplateItemDto> toTemplateItemDtos(List<TemplateItem> templateItems) {
-        return templateItems.stream()
-                .map(templateItem -> new TemplateItemDto(
-                        templateItem.getLabel(),
-                        templateItem.getType().ordinal(),
-                        templateItem.getMandatory(),
-                        templateItem.getMultiple()
-                )).collect(Collectors.toList());
+        return templateItems.stream().map(this::toTemplateItemDto).collect(Collectors.toList());
     }
 
     public List<TemplateItem> toTemplateItems(List<TemplateItemDto> templateItemDtos) {
-        return templateItemDtos.stream()
-                .map(templateItemDto -> new TemplateItem(
-                        templateItemDto.getLabel(),
-                        TemplateItemType.values()[templateItemDto.getType()],
-                        templateItemDto.getMandatory(),
-                        templateItemDto.getMultiple()
-                )).collect(Collectors.toList());
+        return templateItemDtos.stream().map(this::toTemplateItem).collect(Collectors.toList());
+    }
+
+    public TemplateItemDto toTemplateItemDto(TemplateItem templateItem) {
+        return new TemplateItemDto(
+                templateItem.getLabel(),
+                templateItem.getType().ordinal(),
+                templateItem.getMandatory(),
+                templateItem.getMultiple()
+        );
+    }
+
+    public TemplateItem toTemplateItem(TemplateItemDto templateItemDto) {
+        return new TemplateItem(
+                templateItemDto.getLabel(),
+                TemplateItemType.values()[templateItemDto.getType()],
+                templateItemDto.getMandatory(),
+                templateItemDto.getMultiple()
+        );
     }
 
 }

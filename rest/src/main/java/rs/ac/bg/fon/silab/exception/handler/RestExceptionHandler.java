@@ -37,6 +37,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<Object> handleRuntimeException(RuntimeException e) {
+        e.printStackTrace();
         return responseBuilder.createResponse()
                 .withStatus(HttpStatus.INTERNAL_SERVER_ERROR)
                 .withMessageKey("common.error.internal")

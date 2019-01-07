@@ -8,6 +8,7 @@ import rs.ac.bg.fon.silab.dto.template.TemplateDetailsDto;
 import rs.ac.bg.fon.silab.dto.template.TemplateGetDto;
 import rs.ac.bg.fon.silab.dto.template.TemplateSaveDto;
 import rs.ac.bg.fon.silab.entity.Template;
+import rs.ac.bg.fon.silab.entity.TemplateState;
 import rs.ac.bg.fon.silab.exception.EntityNotFoundException;
 import rs.ac.bg.fon.silab.mapper.TemplateMapper;
 import rs.ac.bg.fon.silab.service.TemplateService;
@@ -50,7 +51,20 @@ public class TemplateServiceImpl implements TemplateService {
             template.setName(templateSaveDto.getName());
             template.setDescription(templateSaveDto.getDescription());
             template.setCompany(companyDao.getById(templateSaveDto.getCompanyId()));
+            template.setState(TemplateState.values()[templateSaveDto.getState()]);
             template.setTemplateItems(templateMapper.toTemplateItems(templateSaveDto.getTemplateItems()));
+        } else {
+            throw new EntityNotFoundException("template.not.found");
+        }
+    }
+
+    @Transactional
+    @Override
+    public void complete(Integer id) {
+        Template template = templateDao.getById(id);
+
+        if (template != null) {
+            template.setState(TemplateState.COMPLETED);
         } else {
             throw new EntityNotFoundException("template.not.found");
         }

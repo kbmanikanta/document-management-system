@@ -1,6 +1,7 @@
 package rs.ac.bg.fon.silab.validator;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import rs.ac.bg.fon.silab.exception.ValidationException;
 
 import javax.validation.ConstraintViolation;
@@ -11,6 +12,9 @@ public abstract class DtoValidator<Dto> {
 
     @Autowired
     private Validator validator;
+
+    @Autowired
+    private MessageSource messageSource;
 
     public void validate(Dto dto) {
         beanValidation(dto);
@@ -39,8 +43,21 @@ public abstract class DtoValidator<Dto> {
         }
     }
 
-    abstract void customValidation(Dto dto);
+    protected Map<String, List<String>> getError(String messageKey, Object[] messageParams, String errorKey) {
+        String errorMessage = messageSource.getMessage(messageKey,
+                messageParams, Locale.getDefault());
 
-    abstract void customValidation(Dto dto, Integer id);
+        return new HashMap<String, List<String>>() {{
+            put(errorKey, Collections.singletonList(errorMessage));
+        }};
+    }
+
+    protected Map<String, List<String>> getError(String messageKey, String errorKey) {
+        return getError(messageKey, null, errorKey);
+    }
+
+    protected abstract void customValidation(Dto dto);
+
+    protected abstract void customValidation(Dto dto, Integer id);
 
 }

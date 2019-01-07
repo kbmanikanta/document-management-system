@@ -9,8 +9,8 @@ public class TemplateGetDto extends TemplateDto {
 
     public TemplateGetDto() {}
 
-    public TemplateGetDto(String name, String description, Integer id, CompanyGetDto company) {
-        super(name, description);
+    public TemplateGetDto(String name, String description, Integer state, Integer id, CompanyGetDto company) {
+        super(name, description, state);
         this.id = id;
         this.company = company;
     }

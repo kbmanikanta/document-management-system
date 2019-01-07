@@ -42,6 +42,16 @@ public class TemplateController {
                 .build();
     }
 
+    @PatchMapping(path = "/{id}/complete")
+    public ResponseEntity<Object> complete(@PathVariable Integer id) {
+        templateService.complete(id);
+
+        return responseBuilder.createResponse()
+                .withStatus(HttpStatus.OK)
+                .withMessageKey("template.complete.success")
+                .build();
+    }
+
     @DeleteMapping(path = "/{id}")
     public ResponseEntity<Object> delete(@PathVariable Integer id) {
         templateService.delete(id);

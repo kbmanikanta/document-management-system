@@ -14,7 +14,6 @@
 
     <properties>
         <servlet.version>4.0.1</servlet.version>
-        <jackson.version>2.9.8</jackson.version>
     </properties>
 
     <dependencies>
@@ -31,13 +30,6 @@
             <artifactId>javax.servlet-api</artifactId>
             <version>${servlet.version}</version>
             <scope>provided</scope>
-        </dependency>
-
-        <!-- Jackson -->
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-            <version>${jackson.version}</version>
         </dependency>
 
         <!-- Core Module -->

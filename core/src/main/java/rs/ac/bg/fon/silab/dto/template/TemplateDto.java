@@ -1,7 +1,6 @@
 package rs.ac.bg.fon.silab.dto.template;
 
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 
 public class TemplateDto {
 
@@ -13,11 +12,17 @@ public class TemplateDto {
     @Size(max = 200, message = "{template.description.size}")
     private String description;
 
+    @NotNull(message = "{template.state.not.empty}")
+    @Min(value = 0, message = "{template.state.size}")
+    @Max(value = 1, message = "{template.state.size}")
+    private Integer state;
+
     public TemplateDto() {}
 
-    public TemplateDto(String name, String description) {
+    public TemplateDto(String name, String description, Integer state) {
         this.name = name;
         this.description = description;
+        this.state = state;
     }
 
     public String getName() {
@@ -34,6 +39,14 @@ public class TemplateDto {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Integer getState() {
+        return state;
+    }
+
+    public void setState(Integer state) {
+        this.state = state;
     }
 
 }

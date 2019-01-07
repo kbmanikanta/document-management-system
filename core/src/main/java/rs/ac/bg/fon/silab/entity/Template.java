@@ -1,6 +1,7 @@
 package rs.ac.bg.fon.silab.entity;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -18,6 +19,10 @@ public class Template {
     @Column(name = "description")
     private String description;
 
+    @Enumerated(EnumType.ORDINAL)
+    @Column(name = "state")
+    private TemplateState state;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "company_id")
     private Company company;
@@ -26,11 +31,15 @@ public class Template {
     @JoinColumn(name = "template_id")
     private List<TemplateItem> templateItems;
 
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "template")
+    private List<Document> documents;
+
     public Template() {}
 
-    public Template(String name, String description, Company company, List<TemplateItem> templateItems) {
+    public Template(String name, String description, TemplateState state, Company company, List<TemplateItem> templateItems) {
         this.name = name;
         this.description = description;
+        this.state = state;
         this.company = company;
         this.templateItems = templateItems;
     }
@@ -59,6 +68,14 @@ public class Template {
         this.description = description;
     }
 
+    public TemplateState getState() {
+        return state;
+    }
+
+    public void setState(TemplateState state) {
+        this.state = state;
+    }
+
     public Company getCompany() {
         return company;
     }
@@ -72,7 +89,12 @@ public class Template {
     }
 
     public void setTemplateItems(List<TemplateItem> templateItems) {
-        this.templateItems = templateItems;
+        if (this.templateItems == null) {
+            this.templateItems = new ArrayList<>();
+        }
+
+        this.templateItems.clear();
+        this.templateItems.addAll(templateItems);
     }
 
 }
