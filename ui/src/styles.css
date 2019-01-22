@@ -1,4 +1,117 @@
-/* You can add global styles to this file, and also import other style files */
+html, body {
+  height: 100%;
+  margin: 0;
+}
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+body {
+  background: #fafafa;
+  word-wrap: break-word;
+}
+
+a {
+  text-decoration: none !important;
+}
+
+button:focus {
+  outline: none !important;
+}
+
+.buffer-md-top {
+  margin-top: 15px;
+}
+
+.buffer-md-bottom {
+  margin-bottom: 15px;
+}
+
+.buffer-lg-top {
+  margin-top: 30px;
+}
+
+.text-align-center {
+  text-align: center;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.centered-content {
+  margin: 0 auto;
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+.error-button {
+  background-color: #dc3545 !important;
+}
+
+.error-button-outline {
+  color: #dc3545 !important;
+}
+
+.error-snackbar {
+  background-color: #dc3545;
+  color: white;
+}
+
+.success-snackbar {
+  background-color: #28a745;
+  color: white;
+}
+
+.mat-simple-snackbar-action {
+  color: white;
+}
+
+.masonry-item {
+  width: 100%;
+}
+
+.card-item {
+  margin-bottom: 15px;
+}
+
+@media (min-width: 576px) {
+  .masonry-item {
+    width: 50%;
+  }
+
+  .card-item {
+    margin-right: 15px;
+  }
+}
+
+@media (min-width: 768px) {
+  .masonry-item {
+    width: 33%;
+  }
+}
+
+@media (min-width: 992px) {
+  .masonry-item {
+    width: 25%;
+  }
+}
+
+.mat-input-element:disabled {
+  color: #3f51b5;
+}
+
+.mat-form-field-invalid .mat-input-element, .mat-warn .mat-input-element {
+  color: #dc3545;
+}
+
+.mat-form-field.mat-form-field-invalid .mat-form-field-label {
+  color: #dc3545;
+}
+
+.mat-form-field-appearance-outline.mat-form-field-invalid.mat-form-field-invalid .mat-form-field-outline-thick {
+  color: #dc3545;
+}
+
+.mat-error {
+  color: #dc3545;
+}

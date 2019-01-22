@@ -40,13 +40,11 @@ public class CompanyDaoImpl implements CompanyDao {
     }
 
     @Override
-    public Company getByTaxIdNumber(String taxIdNumber) {
-        List<Company> companies = sessionFactory.getCurrentSession()
+    public List<Company> getByTaxIdNumber(String taxIdNumber) {
+        return sessionFactory.getCurrentSession()
                 .createQuery("from Company where taxIdNumber=:taxIdNumber", Company.class)
                 .setParameter("taxIdNumber", taxIdNumber)
                 .getResultList();
-
-        return companies.size() > 0 ? companies.get(0) : null;
     }
 
 }

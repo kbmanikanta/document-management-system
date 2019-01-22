@@ -11,6 +11,7 @@ import rs.ac.bg.fon.silab.service.CompanyService;
 
 import java.util.List;
 
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping(path = "/companies")
 public class CompanyController {
@@ -59,7 +60,10 @@ public class CompanyController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<CompanyGetDto> getAll() {
+    public List<CompanyGetDto> get(@RequestParam(name = "taxIdNumber", required = false) String taxIdNumber) {
+        if (taxIdNumber != null) {
+            return companyService.getByTaxIdNumber(taxIdNumber);
+        }
         return companyService.getAll();
     }
 

@@ -1,7 +1,9 @@
 package rs.ac.bg.fon.silab.config;
 
+import org.springframework.web.filter.ShallowEtagHeaderFilter;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
+import javax.servlet.Filter;
 import javax.servlet.ServletRegistration;
 
 public class RestDispatcherServletInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
@@ -24,6 +26,11 @@ public class RestDispatcherServletInitializer extends AbstractAnnotationConfigDi
     @Override
     protected void customizeRegistration(ServletRegistration.Dynamic registration) {
         registration.setInitParameter("throwExceptionIfNoHandlerFound", "true");
+    }
+
+    @Override
+    protected Filter[] getServletFilters() {
+        return new Filter[] { new ShallowEtagHeaderFilter() };
     }
 
 }

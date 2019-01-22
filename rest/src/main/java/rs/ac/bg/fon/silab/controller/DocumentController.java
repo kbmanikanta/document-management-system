@@ -12,6 +12,7 @@ import rs.ac.bg.fon.silab.service.DocumentService;
 
 import java.util.List;
 
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping(path = "/documents")
 public class DocumentController {
@@ -60,7 +61,7 @@ public class DocumentController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<DocumentGetDto> getAll() {
+    public List<DocumentGetDto> get() {
         return documentService.getAll();
     }
 

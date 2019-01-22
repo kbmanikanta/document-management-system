@@ -1,0 +1,17 @@
+<mat-card class="mat-elevation-z6 card-item">
+  <mat-form-field>
+    <input matInput [placeholder]="'NAME' | message" [value]="company.name" disabled/>
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput [placeholder]="'TAX_IDENTIFICATION_NUMBER' | message" [value]="company.taxIdNumber" disabled/>
+  </mat-form-field>
+
+  <div align="right">
+    <button mat-icon-button color="primary" (click)="onEdit()">
+      <mat-icon>edit</mat-icon>
+    </button>
+    <button mat-icon-button class="error-button-outline" (click)="onDelete()">
+      <mat-icon>delete</mat-icon>
+    </button>
+  </div>
+</mat-card>

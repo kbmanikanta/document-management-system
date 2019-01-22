@@ -12,6 +12,7 @@ import rs.ac.bg.fon.silab.service.TemplateService;
 
 import java.util.List;
 
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping(path = "/templates")
 public class TemplateController {
@@ -70,7 +71,7 @@ public class TemplateController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<TemplateGetDto> getAll() {
+    public List<TemplateGetDto> get() {
         return templateService.getAll();
     }
 

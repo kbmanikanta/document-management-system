@@ -27,7 +27,7 @@ UI module is an Angular single page application.
 
 ## Install and Run Project
 For running backend part of the application,
-you need Java 1.8 and some Java application server,
+you need Java 8 and some Java application server,
 like Tomcat or Jetty. To install and build it, you need to have Maven 3.6+.
 
 For running frontend part of the application, you need to have Angular CLI 7+.
@@ -44,7 +44,7 @@ Also you can install, build and run the web service using embedded tools in your
 ### Install and Run Single Page Application
 Run `npm install` command on the ui module path in order to fetch all necessary
 JavaScript/TypeScript libraries.
-Take a look at `/ui/src/environments/environment.ts` file, and set the `apiUrl`
+Take a look at `/ui/src/environments/environment.ts` file, and set the `backendUrl`
 property to the current web service URL. By default it is `http://localhost:8080`.
 Run `ng serve --open` command to build and run the Angular project.
 

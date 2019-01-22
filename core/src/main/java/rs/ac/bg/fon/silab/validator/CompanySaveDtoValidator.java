@@ -7,6 +7,8 @@ import rs.ac.bg.fon.silab.entity.Company;
 import rs.ac.bg.fon.silab.dto.company.CompanySaveDto;
 import rs.ac.bg.fon.silab.exception.ValidationException;
 
+import java.util.List;
+
 @Component
 public class CompanySaveDtoValidator extends DtoValidator<CompanySaveDto> {
 
@@ -15,7 +17,7 @@ public class CompanySaveDtoValidator extends DtoValidator<CompanySaveDto> {
 
     @Override
     protected void customValidation(CompanySaveDto companySaveDTO) {
-        if (companyDao.getByTaxIdNumber(companySaveDTO.getTaxIdNumber()) != null) {
+        if (companyDao.getByTaxIdNumber(companySaveDTO.getTaxIdNumber()).size() > 0) {
             throw new ValidationException(getError("company.tax.id.number.unique",
                     new Object[] { companySaveDTO.getTaxIdNumber() }, "taxIdNumber"));
         }
@@ -23,7 +25,8 @@ public class CompanySaveDtoValidator extends DtoValidator<CompanySaveDto> {
 
     @Override
     protected void customValidation(CompanySaveDto companySaveDTO, Integer id) {
-        Company company = companyDao.getByTaxIdNumber(companySaveDTO.getTaxIdNumber());
+        List<Company> companies = companyDao.getByTaxIdNumber(companySaveDTO.getTaxIdNumber());
+        Company company = companies.size() > 0 ? companies.get(0) : null;
 
         if (company != null && company.getTaxIdNumber().equals(companySaveDTO.getTaxIdNumber())
                 && !company.getId().equals(id)) {

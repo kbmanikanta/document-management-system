@@ -1,0 +1,40 @@
+<mat-toolbar color="primary" class="header mat-elevation-z6">
+  <a mat-icon-button routerLink="/">
+    <mat-icon>dashboard</mat-icon>
+  </a>
+
+  <span class="spacer"></span>
+
+  <ul class="links-big-screen">
+    <li>
+      <a mat-button routerLink="/companies">Companies</a>
+    </li>
+    <li>
+      <a mat-button routerLink="/templates">Templates</a>
+    </li>
+    <li>
+      <a mat-button routerLink="/documents">Documents</a>
+    </li>
+  </ul>
+
+  <a mat-icon-button [matMenuTriggerFor]="menu" class="links-small-screen">
+    <mat-icon>more_vert</mat-icon>
+  </a>
+
+  <mat-menu #menu>
+    <button mat-menu-item routerLink="/companies">
+      <mat-icon>work_outline</mat-icon>
+      <span>Companies</span>
+    </button>
+
+    <button mat-menu-item routerLink="/templates">
+      <mat-icon>list</mat-icon>
+      <span>Templates</span>
+    </button>
+
+    <button mat-menu-item routerLink="/documents">
+      <mat-icon>description</mat-icon>
+      <span>Documents</span>
+    </button>
+  </mat-menu>
+</mat-toolbar>

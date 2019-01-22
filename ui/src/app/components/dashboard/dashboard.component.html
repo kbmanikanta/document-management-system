@@ -1,0 +1,29 @@
+<mat-toolbar color="primary">
+  <span>{{ 'DASHBOARD' | message }}</span>
+</mat-toolbar>
+
+<div class="container buffer-lg-top">
+  <div class="row">
+    <div class="col-lg-8 offset-lg-2 col-md-6 offset-md-3 col-sm-6 offset-sm-3">
+      <ngx-masonry>
+        <div ngxMasonryItem class="masonry-tile-item" *ngFor="let tile of tiles">
+          <a [routerLink]="tile.routerLink">
+            <mat-card class="mat-elevation-z6 dashboard-tile">
+              <mat-card-header>
+                <mat-card-title>
+                  {{ tile.titleKey | message }}
+                </mat-card-title>
+              </mat-card-header>
+
+              <mat-card-content>
+                <p>
+                  {{ tile.descriptionKey | message }}
+                </p>
+              </mat-card-content>
+            </mat-card>
+          </a>
+        </div>
+      </ngx-masonry>
+    </div>
+  </div>
+</div>

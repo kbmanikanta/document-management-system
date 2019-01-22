@@ -12,6 +12,7 @@ import rs.ac.bg.fon.silab.service.CompanyService;
 import rs.ac.bg.fon.silab.validator.DtoValidator;
 
 import javax.transaction.Transactional;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -81,4 +82,11 @@ public class CompanyServiceImpl implements CompanyService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional
+    @Override
+    public List<CompanyGetDto> getByTaxIdNumber(String taxIdNumber) {
+        return companyDao.getByTaxIdNumber(taxIdNumber).stream()
+                .map(company -> companyMapper.toCompanyGetDto(company))
+                .collect(Collectors.toList());
+    }
 }

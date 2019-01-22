@@ -1,0 +1,9 @@
+.wrapper {
+  min-height: 100%;
+  margin-bottom: -70px;
+}
+
+.push,
+.footer {
+  height: 70px;
+}
