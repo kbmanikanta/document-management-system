@@ -1,1 +1,19 @@
-<app-index-header (search)="onSearch($event)" titleKey="TEMPLATES"></app-index-header>
+<app-index-header (search)="onSearch($event)" (refresh)="onRefresh()" titleKey="TEMPLATES"></app-index-header>
+<div class="container buffer-lg-top">
+  <mat-progress-spinner class="centered-content" *ngIf="loading" mode="indeterminate"></mat-progress-spinner>
+
+  <div *ngIf="!loading">
+    <ngx-masonry>
+      <div ngxMasonryItem class="masonry-item" *ngFor="let template of paginatedTemplates">
+        <app-template-item [template]="template" (saveAsCompleted)="onSaveAsCompleted($event)"
+                           (edit)="onEdit($event)" (delete)="onDelete($event)"></app-template-item>
+      </div>
+    </ngx-masonry>
+
+    <div class="text-align-center" *ngIf="limit < filteredTemplates.length">
+      <button mat-raised-button color="primary" class="centered-content" (click)="onLoadMore()">
+        {{ 'LOAD_MORE' | message }}
+      </button>
+    </div>
+  </div>
+</div>

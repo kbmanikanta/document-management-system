@@ -1,0 +1,128 @@
+<mat-progress-spinner class="centered-content" *ngIf="loading" mode="indeterminate"></mat-progress-spinner>
+
+<form *ngIf="templateForm && !loading" [formGroup]="templateForm" autocomplete="off">
+  <div class="row">
+    <div class="col-md-6 offset-md-3">
+      <mat-card class="mat-elevation-z6">
+        <mat-form-field class="full-width" appearance="outline">
+          <mat-label>{{ 'NAME' | message }}</mat-label>
+          <input matInput type="text" formControlName="name"/>
+
+          <mat-error *ngIf="formValidationHelper.isNotValidRequired(templateForm, 'name'); else nameMaxLength">
+            {{ 'VALIDATION_NAME_REQUIRED' | message }}
+          </mat-error>
+
+          <ng-template #nameMaxLength>
+            <mat-error *ngIf="formValidationHelper.isNotValidMaxLength(templateForm, 'name')">
+              {{ 'VALIDATION_NAME_MAX_LENGTH' | message }}
+            </mat-error>
+          </ng-template>
+        </mat-form-field>
+
+        <mat-form-field class="full-width" appearance="outline">
+          <mat-label>{{ 'DESCRIPTION' | message }}</mat-label>
+          <textarea matInput matTextareaAutosize matAutosizeMinRows="3"
+                    matAutosizeMaxRows="10" type="text" formControlName="description"></textarea>
+
+          <mat-error
+            *ngIf="formValidationHelper.isNotValidRequired(templateForm, 'description'); else descriptionMaxLength">
+            {{ 'VALIDATION_DESCRIPTION_REQUIRED' | message }}
+          </mat-error>
+
+          <ng-template #descriptionMaxLength>
+            <mat-error *ngIf="formValidationHelper.isNotValidMaxLength(templateForm, 'description')">
+              {{ 'VALIDATION_DESCRIPTION_MAX_LENGTH' | message }}
+            </mat-error>
+          </ng-template>
+        </mat-form-field>
+
+        <mat-form-field class="full-width" appearance="outline">
+          <mat-label>{{ 'COMPANY' | message }}</mat-label>
+          <input type="text" aria-label="Number" matInput formControlName="company"
+                 #filterString [matAutocomplete]="auto">
+
+          <mat-autocomplete #auto="matAutocomplete" autoActiveFirstOption [displayWith]="displayCompany">
+            <mat-option *ngFor="let company of companies | async | typeahead:filterString.value:['name', 'taxIdNumber']"
+                        [value]="company">
+              {{ displayCompany(company) }}
+            </mat-option>
+          </mat-autocomplete>
+
+          <mat-error *ngIf="formValidationHelper.isNotValidRequired(templateForm, 'company')">
+            {{ 'VALIDATION_COMPANY_REQUIRED' | message }}
+          </mat-error>
+        </mat-form-field>
+      </mat-card>
+    </div>
+  </div>
+
+  <div class="row buffer-md-top buffer-md-bottom">
+    <div class="col-md-12">
+      <div class="text-align-center">
+        <button mat-raised-button color="primary" type="button"
+                [matTooltip]="'ADD_TEMPLATE_ITEM_INFO' | message" (click)="onAddTemplateItem()">
+          {{ 'ADD_TEMPLATE_ITEM' | message }}
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="row" formArrayName="templateItems">
+    <div class="col-md-4 buffer-md-bottom"
+         [ngClass]="{ 'offset-md-4': templateForm.get('templateItems').length === 1, 'offset-md-2': templateForm.get('templateItems').length === 2 && i === 0 }"
+         [formGroupName]="i"
+         *ngFor="let templateItem of templateForm.get('templateItems').controls; let i = index;">
+      <mat-card class="mat-elevation-z6">
+        <mat-form-field class="full-width" appearance="outline">
+          <mat-label>{{ 'LABEL' | message }}</mat-label>
+          <input matInput type="text" formControlName="label"/>
+
+          <mat-error
+            *ngIf="formValidationHelper.isNotValidRequired(templateItem, 'label'); else labelMaxLength">
+            {{ 'VALIDATION_LABEL_REQUIRED' | message }}
+          </mat-error>
+
+          <ng-template #labelMaxLength>
+            <mat-error *ngIf="formValidationHelper.isNotValidMaxLength(templateItem, 'label'); else labelUnique">
+              {{ 'VALIDATION_LABEL_MAX_LENGTH' | message }}
+            </mat-error>
+          </ng-template>
+
+          <ng-template #labelUnique>
+            <mat-error *ngIf="formValidationHelper.isNotValidUnique(templateItem, 'label')">
+              {{ 'VALIDATION_LABEL_UNIQUE' | message }}
+            </mat-error>
+          </ng-template>
+        </mat-form-field>
+
+        <mat-form-field class="full-width" appearance="outline">
+          <mat-label>{{ 'TYPE' | message }}</mat-label>
+          <mat-select placeholder="Favorite food" formControlName="type">
+            <mat-option *ngFor="let type of templateItemTypes" [value]="type.value">
+              {{ type.labelKey | message }}
+            </mat-option>
+          </mat-select>
+
+          <mat-error *ngIf="formValidationHelper.isNotValidRequired(templateItem, 'type')">
+            {{ 'VALIDATION_TYPE_REQUIRED' | message }}
+          </mat-error>
+        </mat-form-field>
+
+        <mat-slide-toggle class="full-width buffer-md-bottom" color="primary" formControlName="mandatory">
+          {{ 'MANDATORY' | message }}
+        </mat-slide-toggle>
+
+        <mat-slide-toggle class="full-width" color="primary" formControlName="multiple">
+          {{ 'MULTIPLE' | message }}
+        </mat-slide-toggle>
+
+        <div align="right">
+          <button mat-icon-button [title]="'DELETE' | message" type="button"
+                  class="error-button-outline" (click)="onDeleteTemplateItem(i)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+      </mat-card>
+    </div>
+  </div>
+</form>

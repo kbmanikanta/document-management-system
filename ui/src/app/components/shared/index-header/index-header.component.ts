@@ -9,8 +9,10 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class IndexHeaderComponent implements OnInit {
 
   @Input() titleKey: string;
+
   @Output() refresh = new EventEmitter();
   @Output() search = new EventEmitter<string>();
+
   expandedSearch = false;
 
   constructor(private route: ActivatedRoute, private router: Router) {}
@@ -18,7 +20,7 @@ export class IndexHeaderComponent implements OnInit {
   ngOnInit() {}
 
   onBack() {
-    this.router.navigate(['/']);
+    this.router.navigate(['../'], { relativeTo: this.route });
   }
 
   onRefresh() {
@@ -26,10 +28,10 @@ export class IndexHeaderComponent implements OnInit {
   }
 
   onAdd() {
-    this.router.navigate(['new'], { relativeTo: this.route });
+    this.router.navigate(['add'], { relativeTo: this.route });
   }
 
-  onClear() {
+  onClose() {
     this.expandedSearch = false;
     this.search.emit('');
   }

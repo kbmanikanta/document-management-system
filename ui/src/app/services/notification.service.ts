@@ -7,19 +7,19 @@ export class NotificationService {
 
   constructor(private snackBar: MatSnackBar, private messagesService: MessagesService) {}
 
-  pushSuccessNotification(messageKey: string) {
-    this.pushNotification(messageKey, 'success-snackbar');
+  pushSuccess(messageKey: string) {
+    this.push(messageKey, 'success-snackbar');
   }
 
-  pushErrorNotification(messageKey: string) {
-    this.pushNotification(messageKey, 'error-snackbar');
+  pushError(messageKey: string) {
+    this.push(messageKey, 'error-snackbar');
   }
 
-  private pushNotification(messageKey: string, className: string) {
+  private push(messageKey: string, className: string) {
     const message = this.messagesService.getMessage(messageKey);
 
     this.snackBar.open(message, 'X', {
-      duration: 4000,
+      duration: 10000,
       panelClass: [className],
       verticalPosition: 'bottom',
       horizontalPosition: 'right'

@@ -45,7 +45,7 @@ export class CompanyIndexComponent implements OnInit, OnDestroy {
           this.paginatedCompanies = this.filteredCompanies.slice(0, this.limit);
         } else {
           this.getLoading = false;
-          this.notificationService.pushErrorNotification('COMPANIES_LOADING_ERROR');
+          this.notificationService.pushError('COMPANIES_LOADING_ERROR');
         }
       });
 
@@ -55,9 +55,9 @@ export class CompanyIndexComponent implements OnInit, OnDestroy {
         this.onRefresh();
 
         if (isDeleted) {
-          this.notificationService.pushSuccessNotification('COMPANY_DELETE_SUCCESS');
+          this.notificationService.pushSuccess('COMPANY_DELETE_SUCCESS');
         } else {
-          this.notificationService.pushErrorNotification('COMPANY_DELETE_ERROR');
+          this.notificationService.pushError('COMPANY_DELETE_ERROR');
         }
       });
   }

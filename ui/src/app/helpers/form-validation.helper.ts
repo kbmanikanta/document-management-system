@@ -19,6 +19,9 @@ export const formValidationHelper = {
   isNotValidPattern: (form: FormGroup, field: string) => {
     return formValidationHelper.isNotValid(form, field, 'pattern');
   },
+  isNotValidUnique: (form: FormGroup, field: string) => {
+    return formValidationHelper.isNotValid(form, field, 'unique');
+  },
   markAllFieldsAsTouched: (form: FormGroup) => {
     (<any> Object).values(form.controls).forEach(control => {
       control.markAsTouched();

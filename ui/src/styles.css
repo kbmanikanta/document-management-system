@@ -52,6 +52,10 @@ button:focus {
   color: #dc3545 !important;
 }
 
+.success-button-outline {
+  color: #28a745 !important;
+}
+
 .error-snackbar {
   background-color: #dc3545;
   color: white;

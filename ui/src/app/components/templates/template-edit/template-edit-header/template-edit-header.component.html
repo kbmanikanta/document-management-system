@@ -1,0 +1,18 @@
+<mat-toolbar color="primary">
+  <button mat-icon-button [title]="'BACK' | message" (click)="onBack()">
+    <mat-icon>arrow_back_ios</mat-icon>
+  </button>
+  <span>{{ titleKey | message }}</span>
+
+  <span class="spacer"></span>
+
+  <button mat-icon-button [title]="'UNDO_CHANGES' | message" (click)="onUndo()">
+    <mat-icon>undo</mat-icon>
+  </button>
+  <button mat-icon-button [title]="'SAVE_AS_DRAFT' | message" (click)="onSaveAsDraft()">
+    <mat-icon>save</mat-icon>
+  </button>
+  <button mat-icon-button [title]="'SAVE_AS_COMPLETED' | message" (click)="onSaveAsCompleted()">
+    <mat-icon>done</mat-icon>
+  </button>
+</mat-toolbar>

@@ -1,13 +1,17 @@
 import { NgModule } from '@angular/core';
 import {
+  MatAutocompleteModule,
   MatButtonModule, MatCardModule,
   MatDialogModule, MatFormFieldModule,
   MatIconModule, MatInputModule,
   MatMenuModule, MatProgressBarModule,
   MatProgressSpinnerModule,
-  MatSnackBarModule, MatToolbarModule
+  MatSelectModule, MatSlideToggleModule,
+  MatSnackBarModule, MatToolbarModule,
+  MatTooltipModule
 } from '@angular/material';
 import { NgxMasonryModule } from 'ngx-masonry';
+import { WaMatConfirmDialogModule } from '@webacad/material-confirm-dialog';
 
 @NgModule({
   exports: [
@@ -22,7 +26,12 @@ import { NgxMasonryModule } from 'ngx-masonry';
     MatProgressSpinnerModule,
     MatSnackBarModule,
     MatDialogModule,
+    MatAutocompleteModule,
+    MatSlideToggleModule,
+    MatSelectModule,
+    MatTooltipModule,
     NgxMasonryModule,
+    WaMatConfirmDialogModule
   ]
 })
-export class AppStylingModule {}
+export class MaterialModule {}

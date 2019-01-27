@@ -9,6 +9,7 @@ import { CompanyModel } from '../../../../models/company.model';
 export class CompanyItemComponent implements OnInit {
 
   @Input() company: CompanyModel;
+
   @Output() edit = new EventEmitter<number>();
   @Output() delete = new EventEmitter<number>();
 

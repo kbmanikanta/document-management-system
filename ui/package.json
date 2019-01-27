@@ -21,6 +21,8 @@
     "@angular/platform-browser": "~7.1.0",
     "@angular/platform-browser-dynamic": "~7.1.0",
     "@angular/router": "~7.1.0",
+    "@rxweb/reactive-form-validators": "^1.4.7",
+    "@webacad/material-confirm-dialog": "0.0.10",
     "bootstrap": "^4.2.1",
     "core-js": "^2.5.4",
     "ngx-masonry": "^1.1.2",

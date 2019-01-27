@@ -1,5 +1,5 @@
 <mat-toolbar color="primary" class="header mat-elevation-z6">
-  <a mat-icon-button routerLink="/">
+  <a mat-icon-button routerLink="/" [title]="'DASHBOARD' | message">
     <mat-icon>dashboard</mat-icon>
   </a>
 
@@ -7,13 +7,13 @@
 
   <ul class="links-big-screen">
     <li>
-      <a mat-button routerLink="/companies">Companies</a>
+      <a mat-button routerLink="/companies">{{ 'COMPANIES' | message }}</a>
     </li>
     <li>
-      <a mat-button routerLink="/templates">Templates</a>
+      <a mat-button routerLink="/templates">{{ 'TEMPLATES' | message }}</a>
     </li>
     <li>
-      <a mat-button routerLink="/documents">Documents</a>
+      <a mat-button routerLink="/documents">{{ 'DOCUMENTS' | message }}</a>
     </li>
   </ul>
 
@@ -23,18 +23,18 @@
 
   <mat-menu #menu>
     <button mat-menu-item routerLink="/companies">
-      <mat-icon>work_outline</mat-icon>
-      <span>Companies</span>
+      <mat-icon>work</mat-icon>
+      <span>{{ 'COMPANIES' | message }}</span>
     </button>
 
     <button mat-menu-item routerLink="/templates">
-      <mat-icon>list</mat-icon>
-      <span>Templates</span>
+      <mat-icon>assignment</mat-icon>
+      <span>{{ 'TEMPLATES' | message }}</span>
     </button>
 
     <button mat-menu-item routerLink="/documents">
       <mat-icon>description</mat-icon>
-      <span>Documents</span>
+      <span>{{ 'DOCUMENTS' | message }}</span>
     </button>
   </mat-menu>
 </mat-toolbar>

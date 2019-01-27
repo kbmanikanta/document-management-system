@@ -21,7 +21,7 @@ export class MessagesService {
   }
 
   getMessage(key: string) {
-    return this.messages[key];
+    return this.messages[key] || key;
   }
 
 }

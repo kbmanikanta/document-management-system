@@ -60,7 +60,7 @@ export class CompanyEditComponent implements OnInit, OnDestroy {
           this.company = company;
           this.initForm(company);
         } else {
-          this.notificationService.pushErrorNotification('COMPANY_LOADING_ERROR');
+          this.notificationService.pushError('COMPANY_LOADING_ERROR');
           this.router.navigate(['../../'], { relativeTo: this.route });
         }
       });
@@ -70,14 +70,14 @@ export class CompanyEditComponent implements OnInit, OnDestroy {
         this.saveLoading = false;
 
         if (isSaved) {
-          this.notificationService.pushSuccessNotification('COMPANY_SAVE_SUCCESS');
+          this.notificationService.pushSuccess('COMPANY_SAVE_SUCCESS');
 
           if (!this.editMode) {
             this.companyForm.reset();
             this.companyForm.markAsPristine();
           }
         } else {
-          this.notificationService.pushErrorNotification('COMPANY_SAVE_ERROR');
+          this.notificationService.pushError('COMPANY_SAVE_ERROR');
         }
       });
   }
@@ -94,7 +94,7 @@ export class CompanyEditComponent implements OnInit, OnDestroy {
         Validators.maxLength(9),
         Validators.pattern(/^\d+$/),
       ], [
-        this.isNotValidTaxIdNumberUnique.bind(this)
+        this.taxIdNumberUniqueValidator
       ])
     });
   }
@@ -130,7 +130,7 @@ export class CompanyEditComponent implements OnInit, OnDestroy {
 
   }
 
-  isNotValidTaxIdNumberUnique(control: AbstractControl): Observable<{ [key: string]: any }> {
+  taxIdNumberUniqueValidator = (control: AbstractControl): Observable<{ [key: string]: any }> => {
     return this.companiesService.getByTaxIdNumber(control.value)
       .pipe(map((companies) => {
         if (this.editMode) {
@@ -139,7 +139,7 @@ export class CompanyEditComponent implements OnInit, OnDestroy {
         }
         return companies.length > 0 ? { taxIdNumberUnique: true } : null;
       }));
-  }
+  };
 
   ngOnDestroy() {
     this.companiesProgressSubscription.unsubscribe();

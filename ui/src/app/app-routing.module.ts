@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
-import { ErrorComponent } from './components/error/error.component';
+import { NotFoundComponent } from './components/not-found/not-found.component';
 import { CompanyIndexComponent } from './components/companies/company-index/company-index.component';
 import { TemplateIndexComponent } from './components/templates/template-index/template-index.component';
 import { DocumentIndexComponent } from './components/documents/document-index/document-index.component';
@@ -12,15 +12,15 @@ import { DocumentEditComponent } from './components/documents/document-edit/docu
 const routes: Routes = [
   { path: '', component: DashboardComponent },
   { path: 'companies', component: CompanyIndexComponent },
-  { path: 'companies/new', component: CompanyEditComponent },
+  { path: 'companies/add', component: CompanyEditComponent },
   { path: 'companies/edit/:id', component: CompanyEditComponent },
   { path: 'templates', component: TemplateIndexComponent },
-  { path: 'templates/new', component: TemplateEditComponent },
+  { path: 'templates/add', component: TemplateEditComponent },
   { path: 'templates/edit/:id', component: TemplateEditComponent },
   { path: 'documents', component: DocumentIndexComponent },
-  { path: 'documents/new', component: DocumentEditComponent },
+  { path: 'documents/add', component: DocumentEditComponent },
   { path: 'documents/edit/:id', component: DocumentEditComponent },
-  { path: '**', component: ErrorComponent },
+  { path: '**', component: NotFoundComponent },
 ];
 
 @NgModule({

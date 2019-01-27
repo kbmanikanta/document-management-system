@@ -1,0 +1,28 @@
+<mat-card class="mat-elevation-z6 card-item">
+  <mat-form-field class="full-width">
+    <mat-label>{{ 'NAME' | message }}</mat-label>
+    <input matInput [value]="template.name" disabled/>
+  </mat-form-field>
+  <mat-form-field class="full-width">
+    <mat-label>{{ 'COMPANY_NAME' | message }}</mat-label>
+    <input matInput [value]="template.companyName" disabled/>
+  </mat-form-field>
+  <mat-form-field class="full-width">
+    <mat-label>{{ 'COMPANY_TAX_IDENTIFICATION_NUMBER' | message }}</mat-label>
+    <input matInput [value]="template.companyTaxIdNumber" disabled/>
+  </mat-form-field>
+
+  <div align="right">
+    <button mat-icon-button class="success-button-outline" *ngIf="template.state === templateState.DRAFT"
+            [title]="'SAVE_AS_COMPLETED' | message" (click)="onSaveAsCompleted()">
+      <mat-icon>done</mat-icon>
+    </button>
+    <button mat-icon-button color="primary" *ngIf="template.state === templateState.DRAFT"
+            [title]="'EDIT' | message" (click)="onEdit()">
+      <mat-icon>edit</mat-icon>
+    </button>
+    <button mat-icon-button class="error-button-outline" [title]="'DELETE' | message" (click)="onDelete()">
+      <mat-icon>delete</mat-icon>
+    </button>
+  </div>
+</mat-card>
