@@ -1,1 +1,20 @@
-<app-index-header (search)="onSearch($event)" titleKey="DOCUMENTS"></app-index-header>
+<app-index-header (search)="onSearch($event)" (refresh)="onRefresh()" titleKey="DOCUMENTS"></app-index-header>
+
+<div class="container buffer-lg-top">
+  <mat-progress-spinner class="centered-content" *ngIf="loading" mode="indeterminate"></mat-progress-spinner>
+
+  <div *ngIf="!loading">
+    <ngx-masonry>
+      <div ngxMasonryItem class="masonry-item" *ngFor="let document of paginatedDocuments">
+        <app-document-item [document]="document" (edit)="onEdit($event)" (delete)="onDelete($event)">
+        </app-document-item>
+      </div>
+    </ngx-masonry>
+
+    <div class="text-align-center" *ngIf="limit < filteredDocuments.length">
+      <button mat-raised-button color="primary" class="centered-content" (click)="onLoadMore()">
+        {{ 'LOAD_MORE' | message }}
+      </button>
+    </div>
+  </div>
+</div>

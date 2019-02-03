@@ -1,99 +1,66 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { CompaniesService } from '../../../services/data/companies.service';
-import { Subscription } from 'rxjs';
+import { Component, OnInit } from '@angular/core';
 import { CompanyModel } from '../../../models/company.model';
-import { NotificationService } from '../../../services/notification.service';
+import { NotificationService } from '../../../services/helpers/notification.service';
 import { environment } from '../../../../environments/environment';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ConfirmDialogService } from '../../../services/helpers/confirm-dialog.service';
+import { TypeaheadPipe } from '../../../pipes/typeahead.pipe';
+import { CompaniesDataService } from '../../../services/data/companies-data.service';
 
 @Component({
   selector: 'app-company-index',
   templateUrl: './company-index.component.html',
   styleUrls: ['./company-index.component.css']
 })
-export class CompanyIndexComponent implements OnInit, OnDestroy {
+export class CompanyIndexComponent implements OnInit {
 
-  companiesDataSubscription: Subscription;
-  companiesProgressSubscription: Subscription;
-  deletedCompanySubscription: Subscription;
   companies: CompanyModel[] = [];
   filteredCompanies: CompanyModel[] = [];
   paginatedCompanies: CompanyModel[] = [];
-  getLoading = false;
-  deleteLoading = false;
-  progress: number;
+
+  loading = false;
   limit = environment.pageLimit;
 
-  constructor(private companiesService: CompaniesService,
+  constructor(private companiesDataService: CompaniesDataService,
               private notificationService: NotificationService,
+              private confirmDialogService: ConfirmDialogService,
+              private typeaheadPipe: TypeaheadPipe,
               private route: ActivatedRoute,
               private router: Router) {}
 
   ngOnInit() {
-    this.onRefresh();
-
-    this.companiesProgressSubscription = this.companiesService.getCompaniesProgressListener()
-      .subscribe((progress: number) => {
-        this.progress = progress;
-      });
-
-    this.companiesDataSubscription = this.companiesService.getCompaniesDataListener()
-      .subscribe((companies: CompanyModel[]) => {
-        if (companies) {
-          this.companies = companies;
-          this.filteredCompanies = this.companies;
-          this.paginatedCompanies = this.filteredCompanies.slice(0, this.limit);
-        } else {
-          this.getLoading = false;
-          this.notificationService.pushError('COMPANIES_LOADING_ERROR');
-        }
-      });
-
-    this.deletedCompanySubscription = this.companiesService.getDeletedCompanyListener()
-      .subscribe((isDeleted) => {
-        this.deleteLoading = false;
-        this.onRefresh();
-
-        if (isDeleted) {
-          this.notificationService.pushSuccess('COMPANY_DELETE_SUCCESS');
-        } else {
-          this.notificationService.pushError('COMPANY_DELETE_ERROR');
-        }
-      });
+    this.fetchData();
   }
 
-  onRefresh() {
-    this.progress = 0;
-    this.getLoading = true;
+  fetchData() {
+    this.loading = true;
 
-    setTimeout(() => {
-      this.companiesService.getAll();
-    }, 1000);
+    this.companiesDataService.getAll()
+      .subscribe((companies) => {
+        this.loading = false;
+
+        this.companies = companies;
+        this.filteredCompanies = this.companies;
+        this.paginatedCompanies = this.filteredCompanies.slice(0, this.limit);
+      }, () => {
+        this.loading = false;
+        this.notificationService.pushError('COMPANIES_LOADING_ERROR');
+      });
   }
 
   onSearch(filterString: string) {
-    const filters = filterString.split(' ').filter((filter) => filter);
-
-    if (filters.length > 0) {
-      this.filteredCompanies = this.companies.filter((company) =>
-        filters.reduce((acc, filter) => {
-          if (company.name.toLowerCase().indexOf(filter) > -1 ||
-            company.taxIdNumber.toLowerCase().indexOf(filter) > -1) {
-            acc++;
-          }
-          return acc;
-        }, 0) === filters.length);
-
-    } else {
+    if (filterString.trim().length === 0) {
       this.filteredCompanies = this.companies;
+    } else {
+      this.filteredCompanies = this.typeaheadPipe.transform(this.companies, filterString,
+        ['name', 'taxIdNumber']);
     }
 
     this.paginatedCompanies = this.filteredCompanies.slice(0, this.limit);
   }
 
-  onLoadMore() {
-    this.limit += environment.pageLimit;
-    this.paginatedCompanies = this.filteredCompanies.slice(0, this.limit);
+  onRefresh() {
+    this.fetchData();
   }
 
   onEdit(id: number) {
@@ -101,17 +68,25 @@ export class CompanyIndexComponent implements OnInit, OnDestroy {
   }
 
   onDelete(id: number) {
-    this.deleteLoading = true;
-
-    setTimeout(() => {
-      this.companiesService.delete(id);
-    }, 1000);
+    this.confirmDialogService.openDialog('COMPANY_DELETE_QUESTION')
+      .subscribe((confirmed: boolean) => {
+        if (confirmed) {
+          this.loading = true;
+          this.companiesDataService.delete(id)
+            .subscribe(() => {
+              this.notificationService.pushSuccess('COMPANY_DELETE_SUCCESS');
+              this.fetchData();
+            }, () => {
+              this.loading = false;
+              this.notificationService.pushError('COMPANY_DELETE_ERROR');
+            });
+        }
+      });
   }
 
-  ngOnDestroy() {
-    this.companiesDataSubscription.unsubscribe();
-    this.companiesProgressSubscription.unsubscribe();
-    this.deletedCompanySubscription.unsubscribe();
+  onLoadMore() {
+    this.limit += environment.pageLimit;
+    this.paginatedCompanies = this.filteredCompanies.slice(0, this.limit);
   }
 
 }

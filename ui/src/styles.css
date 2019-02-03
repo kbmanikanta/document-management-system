@@ -119,3 +119,7 @@ button:focus {
 .mat-error {
   color: #dc3545;
 }
+
+.mat-dialog-actions {
+  float: right !important;
+}

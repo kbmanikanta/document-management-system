@@ -22,8 +22,8 @@ DROP TABLE IF EXISTS `company`;
 
 CREATE TABLE `company` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(100) CHARACTER SET latin1 DEFAULT NULL,
-  `tax_id_number` varchar(9) CHARACTER SET latin1 DEFAULT NULL,
+  `name` varchar(100) DEFAULT NULL,
+  `tax_id_number` varchar(9) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQUE_TAX_ID_NUMBER` (`tax_id_number`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -67,8 +67,8 @@ DROP TABLE IF EXISTS `template`;
 
 CREATE TABLE `template` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(100) CHARACTER SET latin1 DEFAULT NULL,
-  `description` varchar(200) CHARACTER SET latin1 DEFAULT NULL,
+  `name` varchar(100) DEFAULT NULL,
+  `description` varchar(200) DEFAULT NULL,
   `state` int(11) DEFAULT NULL,
   `company_id` int(10) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`),
@@ -83,7 +83,7 @@ DROP TABLE IF EXISTS `template_item`;
 CREATE TABLE `template_item` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `template_id` int(10) unsigned DEFAULT NULL,
-  `label` varchar(50) CHARACTER SET latin1 DEFAULT NULL,
+  `label` varchar(50) DEFAULT NULL,
   `type` int(11) DEFAULT NULL,
   `mandatory` tinyint(1) DEFAULT NULL,
   `multiple` tinyint(1) DEFAULT NULL,

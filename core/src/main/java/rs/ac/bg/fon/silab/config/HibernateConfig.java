@@ -64,6 +64,9 @@ public class HibernateConfig {
             setProperty("hibernate.dialect", env.getProperty("hibernate.dialect"));
             setProperty("hibernate.show_sql", env.getProperty("hibernate.show.sql"));
             setProperty("hibernate.format_sql", env.getProperty("hibernate.format.sql"));
+            setProperty("hibernate.connection.CharSet", env.getProperty("hibernate.connection.charset"));
+            setProperty("hibernate.connection.characterEncoding", env.getProperty("hibernate.connection.charset"));
+            setProperty("hibernate.connection.useUnicode", env.getProperty("hibernate.connection.use.unicode"));
         }};
     }
 

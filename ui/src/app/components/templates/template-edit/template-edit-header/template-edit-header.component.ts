@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { TemplatesService } from '../../templates.service';
+import { TemplateEditService } from '../template-edit.service';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -11,31 +11,31 @@ export class TemplateEditHeaderComponent implements OnInit, OnDestroy {
 
   titleKey = 'TEMPLATE_INSERT';
 
-  editModeSubscription: Subscription;
+  private editModeSubscription: Subscription;
 
-  constructor(private templatesService: TemplatesService) { }
+  constructor(private templateEditService: TemplateEditService) { }
 
   ngOnInit() {
-    this.editModeSubscription = this.templatesService.editModeObserver
+    this.editModeSubscription = this.templateEditService.editModeObserver
       .subscribe(() => {
         this.titleKey = 'TEMPLATE_EDIT';
       });
   }
 
   onBack() {
-    this.templatesService.backObserver.next();
+    this.templateEditService.backObserver.next();
   }
 
   onUndo() {
-    this.templatesService.undoObserver.next();
+    this.templateEditService.undoObserver.next();
   }
 
   onSaveAsDraft() {
-    this.templatesService.saveAsDraftObserver.next();
+    this.templateEditService.saveAsDraftObserver.next();
   }
 
   onSaveAsCompleted() {
-    this.templatesService.saveAsCompletedObserver.next();
+    this.templateEditService.saveAsCompletedObserver.next();
   }
 
   ngOnDestroy() {

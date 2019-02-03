@@ -1,0 +1,54 @@
+<mat-progress-spinner class="centered-content" *ngIf="loading" mode="indeterminate"></mat-progress-spinner>
+
+<form *ngIf="companyForm && !loading" [formGroup]="companyForm" autocomplete="off">
+  <div class="row">
+    <div class="col-md-6 offset-md-3">
+      <mat-card class="mat-elevation-z6">
+        <mat-form-field class="full-width" appearance="outline">
+          <mat-label>{{ 'NAME' | message }}</mat-label>
+          <input matInput formControlName="name" type="text"/>
+
+          <mat-error *ngIf="formValidationService.isNotValidRequired(companyForm, 'name'); else nameMaxLength">
+            {{ 'VALIDATION_NAME_REQUIRED' | message }}
+          </mat-error>
+
+          <ng-template #nameMaxLength>
+            <mat-error *ngIf="formValidationService.isNotValidMaxLength(companyForm, 'name')">
+              {{ 'VALIDATION_NAME_MAX_LENGTH' | message }}
+            </mat-error>
+          </ng-template>
+        </mat-form-field>
+
+        <mat-form-field class="full-width" appearance="outline">
+          <mat-label>{{ 'TAX_IDENTIFICATION_NUMBER' | message }}</mat-label>
+          <input matInput formControlName="taxIdNumber" type="text"/>
+
+          <mat-error
+            *ngIf="formValidationService.isNotValidRequired(companyForm, 'taxIdNumber'); else taxIdNumberLength">
+            {{ 'VALIDATION_TAX_ID_NUMBER_REQUIRED' | message }}
+          </mat-error>
+
+          <ng-template #taxIdNumberLength>
+            <mat-error
+              *ngIf="formValidationService.isNotValidLength(companyForm, 'taxIdNumber'); else taxIdNumberPattern">
+              {{ 'VALIDATION_TAX_ID_NUMBER_LENGTH' | message }}
+            </mat-error>
+          </ng-template>
+
+          <ng-template #taxIdNumberPattern>
+            <mat-error
+              *ngIf="formValidationService.isNotValidPattern(companyForm, 'taxIdNumber'); else taxIdNumberUnique">
+              {{ 'VALIDATION_TAX_ID_NUMBER_PATTERN' | message }}
+            </mat-error>
+          </ng-template>
+
+          <ng-template #taxIdNumberUnique>
+            <mat-error *ngIf="formValidationService.isNotValid(companyForm, 'taxIdNumber', 'taxIdNumberUnique')">
+              {{ 'VALIDATION_TAX_ID_NUMBER_UNIQUE' | message }}
+            </mat-error>
+          </ng-template>
+        </mat-form-field>
+      </mat-card>
+    </div>
+  </div>
+</form>

@@ -4,6 +4,8 @@ import javax.validation.constraints.*;
 
 public class TemplateItemDto {
 
+    private Integer id;
+
     @NotEmpty(message = "{template.item.label.not.empty}")
     @Size(max = 50, message = "{template.item.label.size}")
     private String label;
@@ -21,11 +23,20 @@ public class TemplateItemDto {
 
     public TemplateItemDto() {}
 
-    public TemplateItemDto(String label, Integer type, Boolean mandatory, Boolean multiple) {
+    public TemplateItemDto(Integer id, String label, Integer type, Boolean mandatory, Boolean multiple) {
+        this.id = id;
         this.label = label;
         this.type = type;
         this.mandatory = mandatory;
         this.multiple = multiple;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getLabel() {

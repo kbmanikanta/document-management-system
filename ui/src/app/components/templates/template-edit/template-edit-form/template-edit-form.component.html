@@ -8,12 +8,12 @@
           <mat-label>{{ 'NAME' | message }}</mat-label>
           <input matInput type="text" formControlName="name"/>
 
-          <mat-error *ngIf="formValidationHelper.isNotValidRequired(templateForm, 'name'); else nameMaxLength">
+          <mat-error *ngIf="formValidationService.isNotValidRequired(templateForm, 'name'); else nameMaxLength">
             {{ 'VALIDATION_NAME_REQUIRED' | message }}
           </mat-error>
 
           <ng-template #nameMaxLength>
-            <mat-error *ngIf="formValidationHelper.isNotValidMaxLength(templateForm, 'name')">
+            <mat-error *ngIf="formValidationService.isNotValidMaxLength(templateForm, 'name')">
               {{ 'VALIDATION_NAME_MAX_LENGTH' | message }}
             </mat-error>
           </ng-template>
@@ -25,12 +25,12 @@
                     matAutosizeMaxRows="10" type="text" formControlName="description"></textarea>
 
           <mat-error
-            *ngIf="formValidationHelper.isNotValidRequired(templateForm, 'description'); else descriptionMaxLength">
+            *ngIf="formValidationService.isNotValidRequired(templateForm, 'description'); else descriptionMaxLength">
             {{ 'VALIDATION_DESCRIPTION_REQUIRED' | message }}
           </mat-error>
 
           <ng-template #descriptionMaxLength>
-            <mat-error *ngIf="formValidationHelper.isNotValidMaxLength(templateForm, 'description')">
+            <mat-error *ngIf="formValidationService.isNotValidMaxLength(templateForm, 'description')">
               {{ 'VALIDATION_DESCRIPTION_MAX_LENGTH' | message }}
             </mat-error>
           </ng-template>
@@ -38,8 +38,8 @@
 
         <mat-form-field class="full-width" appearance="outline">
           <mat-label>{{ 'COMPANY' | message }}</mat-label>
-          <input type="text" aria-label="Number" matInput formControlName="company"
-                 #filterString [matAutocomplete]="auto">
+          <input type="text" matInput formControlName="company"
+                 #filterString [matAutocomplete]="auto"/>
 
           <mat-autocomplete #auto="matAutocomplete" autoActiveFirstOption [displayWith]="displayCompany">
             <mat-option *ngFor="let company of companies | async | typeahead:filterString.value:['name', 'taxIdNumber']"
@@ -48,7 +48,7 @@
             </mat-option>
           </mat-autocomplete>
 
-          <mat-error *ngIf="formValidationHelper.isNotValidRequired(templateForm, 'company')">
+          <mat-error *ngIf="formValidationService.isNotValidRequired(templateForm, 'company')">
             {{ 'VALIDATION_COMPANY_REQUIRED' | message }}
           </mat-error>
         </mat-form-field>
@@ -78,18 +78,18 @@
           <input matInput type="text" formControlName="label"/>
 
           <mat-error
-            *ngIf="formValidationHelper.isNotValidRequired(templateItem, 'label'); else labelMaxLength">
+            *ngIf="formValidationService.isNotValidRequired(templateItem, 'label'); else labelMaxLength">
             {{ 'VALIDATION_LABEL_REQUIRED' | message }}
           </mat-error>
 
           <ng-template #labelMaxLength>
-            <mat-error *ngIf="formValidationHelper.isNotValidMaxLength(templateItem, 'label'); else labelUnique">
+            <mat-error *ngIf="formValidationService.isNotValidMaxLength(templateItem, 'label'); else labelUnique">
               {{ 'VALIDATION_LABEL_MAX_LENGTH' | message }}
             </mat-error>
           </ng-template>
 
           <ng-template #labelUnique>
-            <mat-error *ngIf="formValidationHelper.isNotValidUnique(templateItem, 'label')">
+            <mat-error *ngIf="formValidationService.isNotValidUnique(templateItem, 'label')">
               {{ 'VALIDATION_LABEL_UNIQUE' | message }}
             </mat-error>
           </ng-template>
@@ -103,7 +103,7 @@
             </mat-option>
           </mat-select>
 
-          <mat-error *ngIf="formValidationHelper.isNotValidRequired(templateItem, 'type')">
+          <mat-error *ngIf="formValidationService.isNotValidRequired(templateItem, 'type')">
             {{ 'VALIDATION_TYPE_REQUIRED' | message }}
           </mat-error>
         </mat-form-field>

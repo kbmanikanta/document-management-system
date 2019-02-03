@@ -1,11 +1,10 @@
 import { Subject } from 'rxjs';
 
-export class TemplatesService {
+export class DocumentEditService {
 
   backObserver = new Subject();
   undoObserver = new Subject();
-  saveAsDraftObserver = new Subject();
-  saveAsCompletedObserver = new Subject();
+  saveObserver = new Subject();
   editModeObserver = new Subject();
 
 }

@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { TemplateModel } from '../../models/template.model';
 import { map } from 'rxjs/operators';
+import { TemplateState } from '../../models/template-state.enum';
 
 const BACKEND_URL = `${environment.backendUrl}/templates`;
 
@@ -40,6 +41,14 @@ export class TemplatesDataService {
 
           return template;
         })));
+  }
+
+  getAllCompleted() {
+    return this.http.get<TemplateModel[]>(BACKEND_URL, {
+      params: {
+        state: String(TemplateState.COMPLETED)
+      }
+    });
   }
 
 }

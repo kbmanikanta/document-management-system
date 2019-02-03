@@ -1,6 +1,9 @@
+import { TemplateItemType } from './template-item-type.enum';
+
 export interface TemplateItemModel {
+  id?: number;
   label?: string;
-  type?: number;
+  type?: TemplateItemType;
   mandatory?: boolean;
   multiple?: boolean;
 }

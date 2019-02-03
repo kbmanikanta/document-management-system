@@ -10,6 +10,7 @@ import rs.ac.bg.fon.silab.dto.template.TemplateSaveDto;
 import rs.ac.bg.fon.silab.entity.Template;
 import rs.ac.bg.fon.silab.entity.TemplateState;
 import rs.ac.bg.fon.silab.exception.EntityNotFoundException;
+import rs.ac.bg.fon.silab.exception.WrongQueryParamsException;
 import rs.ac.bg.fon.silab.mapper.TemplateMapper;
 import rs.ac.bg.fon.silab.service.TemplateService;
 import rs.ac.bg.fon.silab.validator.DtoValidator;
@@ -100,6 +101,18 @@ public class TemplateServiceImpl implements TemplateService {
         return templateDao.getAll().stream()
                 .map(template -> templateMapper.toTemplateGetDto(template))
                 .collect(Collectors.toList());
+    }
+
+    @Transactional
+    @Override
+    public List<TemplateGetDto> getByState(Integer state) {
+        if (TemplateState.values().length > state) {
+            return templateDao.getByState(TemplateState.values()[state]).stream()
+                    .map(template -> templateMapper.toTemplateGetDto(template))
+                    .collect(Collectors.toList());
+        }
+
+        throw new WrongQueryParamsException("template.query.param.state.invalid");
     }
 
 }

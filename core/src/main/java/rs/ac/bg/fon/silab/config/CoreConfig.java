@@ -29,6 +29,7 @@ public class CoreConfig {
     public MessageSource messageSource() {
         return new ResourceBundleMessageSource() {{
             setBasename("messages");
+            setDefaultEncoding("UTF-8");
         }};
     }
 

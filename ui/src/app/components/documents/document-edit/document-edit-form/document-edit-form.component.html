@@ -1,0 +1,162 @@
+<mat-progress-spinner class="centered-content" *ngIf="loading" mode="indeterminate"></mat-progress-spinner>
+
+<form *ngIf="documentForm && !loading" [formGroup]="documentForm" autocomplete="off">
+  <div class="row">
+    <div class="col-md-6 offset-md-3">
+      <mat-card class="mat-elevation-z6">
+        <mat-form-field class="full-width" appearance="outline">
+          <mat-label>{{ 'NAME' | message }}</mat-label>
+          <input matInput type="text" formControlName="name"/>
+
+          <mat-error *ngIf="formValidationService.isNotValidRequired(documentForm, 'name'); else nameMaxLength">
+            {{ 'VALIDATION_NAME_REQUIRED' | message }}
+          </mat-error>
+
+          <ng-template #nameMaxLength>
+            <mat-error *ngIf="formValidationService.isNotValidMaxLength(documentForm, 'name')">
+              {{ 'VALIDATION_NAME_MAX_LENGTH' | message }}
+            </mat-error>
+          </ng-template>
+        </mat-form-field>
+
+        <mat-form-field class="full-width" appearance="outline">
+          <mat-label>{{ 'TEMPLATE' | message }}</mat-label>
+          <input type="text" matInput formControlName="template"
+                 #filterString [matAutocomplete]="auto"/>
+
+          <mat-autocomplete #auto="matAutocomplete" autoActiveFirstOption [displayWith]="displayTemplate"
+                            (optionSelected)="onSelectTemplate($event.option.value.id)">
+            <mat-option
+              *ngFor="let template of templates | async | typeahead:filterString.value:['name']"
+              [value]="template">
+              {{ displayTemplate(template) }}
+            </mat-option>
+          </mat-autocomplete>
+
+          <mat-error *ngIf="formValidationService.isNotValidRequired(documentForm, 'template')">
+            {{ 'VALIDATION_TEMPLATE_REQUIRED' | message }}
+          </mat-error>
+        </mat-form-field>
+      </mat-card>
+    </div>
+  </div>
+
+  <div class="row buffer-lg-top" *ngIf="templateItems">
+    <div class="col-md-6 offset-md-3">
+      <mat-card class="mat-elevation-z6" formArrayName="documentItems">
+        <div [formGroupName]="i" *ngFor="let templateItem of templateItems; let i = index">
+          <div *ngIf="templateItem.type === templateItemType.BOOLEAN; else inputItem"
+               class="buffer-md-bottom">
+            <mat-slide-toggle color="primary" formControlName="booleanValue" class="slide-toggle-item">
+              {{ templateItem.label }}
+            </mat-slide-toggle>
+
+            <div *ngIf="templateItem.multiple" class="slide-toggle-button">
+              <button *ngIf="isLastItemInGroup(i)" mat-icon-button type="button" (click)="onAddItem(i)">
+                <mat-icon>add</mat-icon>
+              </button>
+              <button *ngIf="!isLastItemInGroup(i)" mat-icon-button type="button" (click)="onRemoveItem(i)">
+                <mat-icon>clear</mat-icon>
+              </button>
+            </div>
+          </div>
+
+          <ng-template #inputItem>
+            <mat-form-field appearance="outline" class="full-width"
+                            *ngIf="templateItem.type === templateItemType.INTEGER; else doubleControl">
+              <mat-label>{{ templateItem.label }}</mat-label>
+              <input type="text" matInput formControlName="integerValue"/>
+
+              <button *ngIf="templateItem.multiple && isLastItemInGroup(i)"
+                      matSuffix mat-icon-button type="button" (click)="onAddItem(i)">
+                <mat-icon>add</mat-icon>
+              </button>
+              <button *ngIf="templateItem.multiple && !isLastItemInGroup(i)"
+                      matSuffix mat-icon-button type="button" (click)="onRemoveItem(i)">
+                <mat-icon>clear</mat-icon>
+              </button>
+
+              <mat-error *ngIf="isNotValidRequired(i, 'integerValue')">
+                {{ 'VALIDATION_FIELD_REQUIRED' | message }}
+              </mat-error>
+
+              <mat-error *ngIf="isNotValidPattern(i, 'integerValue')">
+                {{ 'VALIDATION_FIELD_INTEGER' | message }}
+              </mat-error>
+            </mat-form-field>
+
+            <ng-template #doubleControl>
+              <mat-form-field appearance="outline" class="full-width"
+                              *ngIf="templateItem.type === templateItemType.DOUBLE; else stringControl">
+                <mat-label>{{ templateItem.label }}</mat-label>
+                <input type="text" matInput formControlName="doubleValue"/>
+
+                <button *ngIf="templateItem.multiple && isLastItemInGroup(i)"
+                        matSuffix mat-icon-button type="button" (click)="onAddItem(i)">
+                  <mat-icon>add</mat-icon>
+                </button>
+                <button *ngIf="templateItem.multiple && !isLastItemInGroup(i)"
+                        matSuffix mat-icon-button type="button" (click)="onRemoveItem(i)">
+                  <mat-icon>clear</mat-icon>
+                </button>
+
+                <mat-error *ngIf="isNotValidRequired(i, 'doubleValue')">
+                  {{ 'VALIDATION_FIELD_REQUIRED' | message }}
+                </mat-error>
+
+                <mat-error *ngIf="isNotValidPattern(i, 'doubleValue')">
+                  {{ 'VALIDATION_FIELD_DOUBLE' | message }}
+                </mat-error>
+              </mat-form-field>
+            </ng-template>
+
+            <ng-template #stringControl>
+              <mat-form-field appearance="outline" class="full-width"
+                              *ngIf="templateItem.type === templateItemType.STRING; else dateControl">
+                <mat-label>{{ templateItem.label }}</mat-label>
+                <input type="text" matInput formControlName="stringValue"/>
+
+                <button *ngIf="templateItem.multiple && isLastItemInGroup(i)"
+                        matSuffix mat-icon-button type="button" (click)="onAddItem(i)">
+                  <mat-icon>add</mat-icon>
+                </button>
+                <button *ngIf="templateItem.multiple && !isLastItemInGroup(i)"
+                        matSuffix mat-icon-button type="button" (click)="onRemoveItem(i)">
+                  <mat-icon>clear</mat-icon>
+                </button>
+
+                <mat-error *ngIf="isNotValidRequired(i, 'stringValue')">
+                  {{ 'VALIDATION_FIELD_REQUIRED' | message }}
+                </mat-error>
+              </mat-form-field>
+            </ng-template>
+
+            <ng-template #dateControl>
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>{{ templateItem.label }}</mat-label>
+                <input type="text" matInput formControlName="dateValue"/>
+
+                <button *ngIf="templateItem.multiple && isLastItemInGroup(i)"
+                        matSuffix mat-icon-button type="button" (click)="onAddItem(i)">
+                  <mat-icon>add</mat-icon>
+                </button>
+                <button *ngIf="templateItem.multiple && !isLastItemInGroup(i)"
+                        matSuffix mat-icon-button type="button" (click)="onRemoveItem(i)">
+                  <mat-icon>clear</mat-icon>
+                </button>
+
+                <mat-error *ngIf="isNotValidRequired(i, 'dateValue')">
+                  {{ 'VALIDATION_FIELD_REQUIRED' | message }}
+                </mat-error>
+
+                <mat-error *ngIf="isNotValidPattern(i, 'dateValue')">
+                  {{ 'VALIDATION_FIELD_DATE' | message }}
+                </mat-error>
+              </mat-form-field>
+            </ng-template>
+          </ng-template>
+        </div>
+      </mat-card>
+    </div>
+  </div>
+</form>

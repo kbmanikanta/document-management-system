@@ -12,7 +12,6 @@ import rs.ac.bg.fon.silab.service.CompanyService;
 import rs.ac.bg.fon.silab.validator.DtoValidator;
 
 import javax.transaction.Transactional;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 

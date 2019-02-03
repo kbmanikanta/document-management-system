@@ -2,10 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { TemplatesDataService } from '../../../services/data/templates-data.service';
 import { TemplateModel } from '../../../models/template.model';
 import { environment } from '../../../../environments/environment';
-import { NotificationService } from '../../../services/notification.service';
+import { NotificationService } from '../../../services/helpers/notification.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TypeaheadPipe } from '../../../pipes/typeahead.pipe';
-import { ConfirmDialogService } from '../../../services/confirm-dialog.service';
+import { ConfirmDialogService } from '../../../services/helpers/confirm-dialog.service';
 
 @Component({
   selector: 'app-template-index',

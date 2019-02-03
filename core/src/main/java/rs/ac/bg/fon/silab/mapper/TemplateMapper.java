@@ -62,6 +62,7 @@ public class TemplateMapper {
 
     public TemplateItemDto toTemplateItemDto(TemplateItem templateItem) {
         return new TemplateItemDto(
+                templateItem.getId(),
                 templateItem.getLabel(),
                 templateItem.getType().ordinal(),
                 templateItem.getMandatory(),

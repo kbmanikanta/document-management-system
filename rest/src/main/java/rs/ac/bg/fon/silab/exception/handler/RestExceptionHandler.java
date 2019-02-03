@@ -10,6 +10,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import rs.ac.bg.fon.silab.exception.ValidationException;
 import rs.ac.bg.fon.silab.exception.EntityNotFoundException;
+import rs.ac.bg.fon.silab.exception.WrongQueryParamsException;
 import rs.ac.bg.fon.silab.response.builder.ResponseBuilder;
 
 @ControllerAdvice
@@ -31,6 +32,14 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<Object> handleEntityNotFoundException(EntityNotFoundException e) {
         return responseBuilder.createResponse()
                 .withStatus(HttpStatus.NOT_FOUND)
+                .withMessageKey(e.getErrorMessageKey())
+                .build();
+    }
+
+    @ExceptionHandler(WrongQueryParamsException.class)
+    public ResponseEntity<Object> handleWrongQueryParamsException(WrongQueryParamsException e) {
+        return responseBuilder.createResponse()
+                .withStatus(HttpStatus.BAD_REQUEST)
                 .withMessageKey(e.getErrorMessageKey())
                 .build();
     }

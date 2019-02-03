@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import rs.ac.bg.fon.silab.dto.template.TemplateDetailsDto;
 import rs.ac.bg.fon.silab.dto.template.TemplateGetDto;
 import rs.ac.bg.fon.silab.dto.template.TemplateSaveDto;
+import rs.ac.bg.fon.silab.entity.TemplateState;
 import rs.ac.bg.fon.silab.response.builder.ResponseBuilder;
 import rs.ac.bg.fon.silab.service.TemplateService;
 
@@ -71,7 +72,10 @@ public class TemplateController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<TemplateGetDto> get() {
+    public List<TemplateGetDto> get(@RequestParam(name = "state", required = false) Integer state) {
+        if (state != null) {
+            return templateService.getByState(state);
+        }
         return templateService.getAll();
     }
 

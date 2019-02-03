@@ -1,13 +1,15 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
-import { CompanyIndexComponent } from './components/companies/company-index/company-index.component';
-import { TemplateIndexComponent } from './components/templates/template-index/template-index.component';
-import { DocumentIndexComponent } from './components/documents/document-index/document-index.component';
+
 import { CompanyEditComponent } from './components/companies/company-edit/company-edit.component';
-import { TemplateEditComponent } from './components/templates/template-edit/template-edit.component';
+import { CompanyIndexComponent } from './components/companies/company-index/company-index.component';
 import { DocumentEditComponent } from './components/documents/document-edit/document-edit.component';
+import { DocumentIndexComponent } from './components/documents/document-index/document-index.component';
+import { TemplateEditComponent } from './components/templates/template-edit/template-edit.component';
+import { TemplateIndexComponent } from './components/templates/template-index/template-index.component';
 
 const routes: Routes = [
   { path: '', component: DashboardComponent },

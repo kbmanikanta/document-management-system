@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { MessagesService } from '../services/messages.service';
+import { MessagesService } from '../services/helpers/messages.service';
 
 @Pipe({
   name: 'message'

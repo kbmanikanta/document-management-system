@@ -3,17 +3,17 @@ import { AbstractControl, FormArray, FormBuilder, FormGroup, Validators } from '
 import { TemplateModel } from '../../../../models/template.model';
 import { Observable, Subscription, throwError } from 'rxjs';
 import { TemplateItemModel } from '../../../../models/template-item.model';
-import { templateItemTypes } from '../../../../helpers/template-item-types.helper';
 import { TemplateState } from '../../../../models/template-state.enum';
 import { CompanyModel } from '../../../../models/company.model';
 import { CompaniesDataService } from '../../../../services/data/companies-data.service';
-import { TemplatesService } from '../../templates.service';
+import { TemplateEditService } from '../template-edit.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TemplatesDataService } from '../../../../services/data/templates-data.service';
-import { NotificationService } from '../../../../services/notification.service';
+import { NotificationService } from '../../../../services/helpers/notification.service';
 import { catchError } from 'rxjs/operators';
 import { RxwebValidators } from '@rxweb/reactive-form-validators';
-import { formValidationHelper } from '../../../../helpers/form-validation.helper';
+import { TemplateEditFormService } from './template-edit-form.service';
+import { FormValidationService } from '../../../../services/helpers/form-validation.service';
 
 @Component({
   selector: 'app-template-edit-form',
@@ -26,27 +26,29 @@ export class TemplateEditFormComponent implements OnInit, OnDestroy {
 
   templateForm: FormGroup;
   template: TemplateModel = {};
+  templateItemTypes;
   companies: Observable<CompanyModel[]>;
-
-  templateItemTypes = templateItemTypes;
-  formValidationHelper = formValidationHelper;
 
   loading = false;
 
-  backSubscription: Subscription;
-  undoSubscription: Subscription;
-  saveAsDraftSubscription: Subscription;
-  saveAsCompletedSubscription: Subscription;
+  private backSubscription: Subscription;
+  private undoSubscription: Subscription;
+  private saveAsDraftSubscription: Subscription;
+  private saveAsCompletedSubscription: Subscription;
 
-  constructor(private templatesService: TemplatesService,
+  constructor(private templateEditService: TemplateEditService,
+              private templateEditFormService: TemplateEditFormService,
               private templatesDataService: TemplatesDataService,
               private companiesDataService: CompaniesDataService,
+              public formValidationService: FormValidationService,
               private notificationService: NotificationService,
               private formBuilder: FormBuilder,
               private route: ActivatedRoute,
               private router: Router) {}
 
   ngOnInit() {
+    this.templateItemTypes = this.templateEditFormService.getTemplateItemTypes();
+
     this.fetchDataAndInitForm();
     this.listenToEvents();
   }
@@ -63,7 +65,7 @@ export class TemplateEditFormComponent implements OnInit, OnDestroy {
 
       if (id) {
         this.editMode = true;
-        this.templatesService.editModeObserver.next();
+        this.templateEditService.editModeObserver.next();
 
         this.loading = true;
 
@@ -86,13 +88,8 @@ export class TemplateEditFormComponent implements OnInit, OnDestroy {
     });
   }
 
-  throwTemplateLoadingError() {
-    this.notificationService.pushError('TEMPLATE_LOADING_ERROR');
-    this.router.navigate(['../../'], { relativeTo: this.route });
-  }
-
   listenToEvents() {
-    this.backSubscription = this.templatesService.backObserver
+    this.backSubscription = this.templateEditService.backObserver
       .subscribe(() => {
         if (this.editMode) {
           this.router.navigate(['../../'], { relativeTo: this.route });
@@ -101,11 +98,12 @@ export class TemplateEditFormComponent implements OnInit, OnDestroy {
         }
       });
 
-    this.undoSubscription = this.templatesService.undoObserver
-      .subscribe(() => {
-        const templateItems = this.templateForm.get('templateItems') as FormArray;
 
+    this.undoSubscription = this.templateEditService.undoObserver
+      .subscribe(() => {
         if (this.editMode) {
+          const templateItems = this.templateForm.get('templateItems') as FormArray;
+
           this.templateForm.patchValue({
             name: this.template.name,
             description: this.template.description,
@@ -124,7 +122,7 @@ export class TemplateEditFormComponent implements OnInit, OnDestroy {
         }
       });
 
-    this.saveAsDraftSubscription = this.templatesService.saveAsDraftObserver
+    this.saveAsDraftSubscription = this.templateEditService.saveAsDraftObserver
       .subscribe(() => {
         if (this.templateForm.valid) {
           const template = {
@@ -134,11 +132,11 @@ export class TemplateEditFormComponent implements OnInit, OnDestroy {
 
           this.save(template);
         } else {
-          this.formValidationHelper.markAllFieldsAsTouched(this.templateForm);
+          this.formValidationService.markAllFieldsAsTouched(this.templateForm);
         }
       });
 
-    this.saveAsCompletedSubscription = this.templatesService.saveAsCompletedObserver
+    this.saveAsCompletedSubscription = this.templateEditService.saveAsCompletedObserver
       .subscribe(() => {
         if (this.templateForm.valid) {
           const template = {
@@ -149,7 +147,7 @@ export class TemplateEditFormComponent implements OnInit, OnDestroy {
 
           this.save(template);
         } else {
-          this.formValidationHelper.markAllFieldsAsTouched(this.templateForm);
+          this.formValidationService.markAllFieldsAsTouched(this.templateForm);
         }
       });
   }
@@ -209,6 +207,11 @@ export class TemplateEditFormComponent implements OnInit, OnDestroy {
       });
   }
 
+  throwTemplateLoadingError() {
+    this.notificationService.pushError('TEMPLATE_LOADING_ERROR');
+    this.router.navigate(['../../'], { relativeTo: this.route });
+  }
+
   createTemplateItem(templateItem: TemplateItemModel = {}) {
     return this.formBuilder.group({
       label: this.formBuilder.control(templateItem.label,
@@ -236,7 +239,7 @@ export class TemplateEditFormComponent implements OnInit, OnDestroy {
   }
 
   requiredCompanyValidator = (control: AbstractControl) => {
-    if (control.value && control.value.id && control.value.name && control.value.taxIdNumber) {
+    if (control.value && control.value.id) {
       return null;
     }
 

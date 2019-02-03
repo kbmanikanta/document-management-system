@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 import rs.ac.bg.fon.silab.dao.TemplateDao;
 import rs.ac.bg.fon.silab.entity.Template;
 import rs.ac.bg.fon.silab.entity.TemplateItem;
+import rs.ac.bg.fon.silab.entity.TemplateState;
 
 import java.util.List;
 
@@ -41,8 +42,17 @@ public class TemplateDaoImpl implements TemplateDao {
     }
 
     @Override
+    public List<Template> getByState(TemplateState state) {
+        return sessionFactory.getCurrentSession()
+                .createQuery("from Template where state=:state", Template.class)
+                .setParameter("state", state)
+                .getResultList();
+    }
+
+    @Override
     public TemplateItem getTemplateItemById(Integer id) {
         return sessionFactory.getCurrentSession()
                 .get(TemplateItem.class, id);
     }
+
 }

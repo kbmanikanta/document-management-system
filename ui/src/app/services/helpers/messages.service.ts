@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 @Injectable()
 export class MessagesService {
 
-  messages: any;
+  private messages: any;
 
   constructor(private http: HttpClient) {}
 
