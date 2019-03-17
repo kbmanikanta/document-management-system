@@ -16,7 +16,7 @@ import java.util.Properties;
 
 @Configuration
 @EnableTransactionManagement
-@PropertySource(value = "database.properties")
+@PropertySource(value = "classpath:database.properties")
 public class HibernateTestConfig {
 
     @Autowired

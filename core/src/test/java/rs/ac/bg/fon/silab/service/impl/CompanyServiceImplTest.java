@@ -6,8 +6,6 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.mockito.junit.jupiter.MockitoSettings;
-import org.mockito.quality.Strictness;
 import rs.ac.bg.fon.silab.dao.CompanyDao;
 import rs.ac.bg.fon.silab.dto.company.CompanyGetDto;
 import rs.ac.bg.fon.silab.dto.company.CompanySaveDto;
@@ -25,7 +23,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-@MockitoSettings(strictness = Strictness.LENIENT)
 class CompanyServiceImplTest {
 
     @Mock
@@ -155,7 +152,7 @@ class CompanyServiceImplTest {
 
         when(companyDao.getAll()).thenReturn(companies);
         IntStream.rangeClosed(0, 2).forEach(i ->
-                when(companyMapper.toCompanyGetDto(companies.get(i))).thenReturn(companyGetDtos.get(i)));
+                doReturn(companyGetDtos.get(i)).when(companyMapper).toCompanyGetDto(companies.get(i)));
 
         List<CompanyGetDto> returnedCompanies = companyService.getAll();
 
